@@ -13,26 +13,45 @@ def read_images_paths(folder_name):
              imPaths.append(path)
     return imPaths
 
-def rms(lis1,lis2):
+def rms(ary1,ary2):
 
-    ary1 = np.array(lis1)
-    ary2 = np.array(lis2)
     subb = np.subtract(ary1, ary2)
-    rms = np.sqrt(np.mean(np.power(subb,2)))
+    rms = np.sqrt(np.mean(np.power(subb, 2)))
     return rms
 
 def test_sides(img1,img2):
 
     (width1, height1) = img1.size
-    (width2, height2) = img1.size
-
+    (width2, height2) = img2.size
+    rms_lis = []
     img1_array = np.asarray(img1.convert('L'))
     img2_array = np.asarray(img2.convert('L'))
-    side1 = img1_array[0:1,:]
-    side2 = img2_array[height2-2:height2-1,:]
-    
 
+    if width1 == width2:
+        side1 = img1_array[0, :]
+        side2 = img2_array[height2-1:, :]
+        rms_lis.append(rms(side1, side2))
 
+        side1 = img1_array[height1-1, :]
+        side2 = img2_array[0, :]
+        rms_lis.append(rms(side1, side2))
+    else:
+        rms_lis.append(1000000)
+        rms_lis.append(1000000)
+
+    if height1 == height2 :
+        side1 = img1_array[:, 0]
+        side2 = img2_array[:, width2-1]
+        rms_lis.append(rms(side1, side2))
+
+        side1 = img1_array[:, width1-1]
+        side2 = img2_array[:, 0]
+        rms_lis.append(rms(side1, side2))
+    else:
+        rms_lis.append(1000000)
+        rms_lis.append(1000000)
+
+    min_rms_pos = rms_lis.index(min(rms_lis))
 
     return min_rms_pos
 

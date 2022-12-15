@@ -29,6 +29,3 @@ img2 = Image.open(path2)
 
 common_side = test_sides(img1, img2)
 merge_images(img1, img2, common_side).show()
-
-
-
